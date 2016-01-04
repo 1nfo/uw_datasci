@@ -1,0 +1,20 @@
+create view fre2 as
+SELECT * FROM frequency
+UNION
+SELECT 'q' as docid, 'washington' as term, 1 as count 
+UNION
+SELECT 'q' as docid, 'taxes' as term, 1 as count
+UNION 
+SELECT 'q' as docid, 'treasury' as term, 1 as count;
+
+select a.docid,sum(a.count),b.docid,sum(b.count),sum(a.count*b.count),sum(a.count*a.count),sum(b.count*b.count)
+from fre2 a,fre2 b 
+where a.term=b.term and a.docid='q'
+group by a.docid,b.docid;
+
+select a.docid,b.docid,sum(a.count*b.count)*sum(a.count*b.count),sum(a.count*a.count)*sum(b.count*b.count) 
+from fre2 a,fre2 b 
+where a.term=b.term 
+group by a.docid,b.docid
+having a.docid='q';
+
